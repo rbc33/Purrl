@@ -7,13 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		598D8E8D3A22E5DEC6343D20 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E7FB6C6A5C869AF19478355 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		188568B1300A8BD4002527F0 /* Purrl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Purrl.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		63495CF582249E9F627104FB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		96B66760E77CDBF9EADD2FE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +37,6 @@
 			children = (
 				188568B3300A8BD4002527F0 /* Purrl */,
 				188568B2300A8BD4002527F0 /* Products */,
-				0E7FB6C6A5C869AF19478355 /* Localizable.strings */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,7 +113,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				598D8E8D3A22E5DEC6343D20 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,17 +128,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		0E7FB6C6A5C869AF19478355 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				96B66760E77CDBF9EADD2FE7 /* en */,
-				63495CF582249E9F627104FB /* es */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		188568BA300A8BD6002527F0 /* Debug */ = {
