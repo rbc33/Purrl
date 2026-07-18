@@ -1,0 +1,10 @@
+/* Spanish localized strings */
+"preset.fine" = "Fino (denso)";
+"preset.medium" = "Medio";
+"preset.coarse" = "Grueso (clic espaciado)";
+"preset.veryCoarse" = "Muy grueso";
+"toggle.enabled" = "Activado ✓";
+"toggle.disabled" = "Desactivado";
+"menu.texture" = "Textura del ronroneo";
+"menu.checkPermission" = "Comprobar permiso de Accesibilidad";
+"menu.quit" = "Salir";

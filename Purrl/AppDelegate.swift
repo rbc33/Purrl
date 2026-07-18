@@ -13,10 +13,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // Presets de tamaño de diente
     private let toothPresets: [(label: String, value: CGFloat)] = [
-        ("Fino (denso)", 4),
-        ("Medio", 8),
-        ("Grueso (clic espaciado)", 16),
-        ("Muy grueso", 28)
+        (NSLocalizedString("preset.fine", comment: ""), 4),
+        (NSLocalizedString("preset.medium", comment: ""), 8),
+        (NSLocalizedString("preset.coarse", comment: ""), 16),
+        (NSLocalizedString("preset.veryCoarse", comment: ""), 28)
     ]
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -33,7 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Toggle activar/desactivar
         let toggleItem = NSMenuItem(
-            title: scrollEngine.isEnabled ? "Activado ✓" : "Desactivado",
+            title: scrollEngine.isEnabled ? NSLocalizedString("toggle.enabled", comment: "") : NSLocalizedString("toggle.disabled", comment: ""),
             action: #selector(toggleEnabled),
             keyEquivalent: ""
         )
@@ -51,18 +51,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             item.state = (scrollEngine.toothSize == preset.value) ? .on : .off
             toothMenu.addItem(item)
         }
-        let toothParent = NSMenuItem(title: "Textura del ronroneo", action: nil, keyEquivalent: "")
+        let toothParent = NSMenuItem(title: NSLocalizedString("menu.texture", comment: ""), action: nil, keyEquivalent: "")
         menu.setSubmenu(toothMenu, for: toothParent)
         menu.addItem(toothParent)
 
         menu.addItem(NSMenuItem.separator())
 
-        let permItem = NSMenuItem(title: "Comprobar permiso de Accesibilidad", action: #selector(recheckPermission), keyEquivalent: "")
+        let permItem = NSMenuItem(title: NSLocalizedString("menu.checkPermission", comment: ""), action: #selector(recheckPermission), keyEquivalent: "")
         permItem.target = self
         menu.addItem(permItem)
 
         menu.addItem(NSMenuItem.separator())
-        let quitItem = NSMenuItem(title: "Salir", action: #selector(quit), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: NSLocalizedString("menu.quit", comment: ""), action: #selector(quit), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
 
