@@ -11,12 +11,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem!
     var scrollEngine = ScrollHapticEngine()
 
-    // Presets de tamaño de diente
+    // Tooth size presets
     private let toothPresets: [(label: String, value: CGFloat)] = [
-        (NSLocalizedString("preset.fine", comment: ""), 4),
-        (NSLocalizedString("preset.medium", comment: ""), 8),
-        (NSLocalizedString("preset.coarse", comment: ""), 16),
-        (NSLocalizedString("preset.veryCoarse", comment: ""), 28)
+        ("Fine (dense)", 4),
+        ("Medium", 8),
+        ("Coarse (spaced clicks)", 16),
+        ("Extra coarse", 28)
     ]
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -31,9 +31,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func rebuildMenu() {
         let menu = NSMenu()
 
-        // Toggle activar/desactivar
+        // Enable/disable toggle
         let toggleItem = NSMenuItem(
-            title: scrollEngine.isEnabled ? NSLocalizedString("toggle.enabled", comment: "") : NSLocalizedString("toggle.disabled", comment: ""),
+            title: scrollEngine.isEnabled ? "Enabled ✓" : "Disabled",
             action: #selector(toggleEnabled),
             keyEquivalent: ""
         )
@@ -42,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        // Submenú de tamaño de diente
+        // Tooth size submenu
         let toothMenu = NSMenu()
         for preset in toothPresets {
             let item = NSMenuItem(title: preset.label, action: #selector(selectTooth(_:)), keyEquivalent: "")
@@ -51,18 +51,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             item.state = (scrollEngine.toothSize == preset.value) ? .on : .off
             toothMenu.addItem(item)
         }
-        let toothParent = NSMenuItem(title: NSLocalizedString("menu.texture", comment: ""), action: nil, keyEquivalent: "")
+        let toothParent = NSMenuItem(title: "Purr Texture", action: nil, keyEquivalent: "")
         menu.setSubmenu(toothMenu, for: toothParent)
         menu.addItem(toothParent)
 
         menu.addItem(NSMenuItem.separator())
 
-        let permItem = NSMenuItem(title: NSLocalizedString("menu.checkPermission", comment: ""), action: #selector(recheckPermission), keyEquivalent: "")
+        let permItem = NSMenuItem(title: "Check Accessibility Permission", action: #selector(recheckPermission), keyEquivalent: "")
         permItem.target = self
         menu.addItem(permItem)
 
         menu.addItem(NSMenuItem.separator())
-        let quitItem = NSMenuItem(title: NSLocalizedString("menu.quit", comment: ""), action: #selector(quit), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
 
@@ -91,10 +91,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func checkAccessibilityPermission() {
         let options: NSDictionary = [kAXTrustedCheckOptionPrompt.takeRetainedValue() as String: true]
         let trusted = AXIsProcessTrustedWithOptions(options)
-        if !trusted {
-            statusItem.button?.title = "🐾⚠️"
-        } else {
-            statusItem.button?.title = "🐾"
-        }
+
+        let symbolName = trusted ? "pawprint.fill" : "exclamationmark.triangle.fill"
+        statusItem.button?.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "Purrl")
     }
 }
