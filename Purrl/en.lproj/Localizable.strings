@@ -1,0 +1,10 @@
+/* English localized strings */
+"preset.fine" = "Fine (dense)";
+"preset.medium" = "Medium";
+"preset.coarse" = "Coarse (spaced click)";
+"preset.veryCoarse" = "Very coarse";
+"toggle.enabled" = "Enabled ✓";
+"toggle.disabled" = "Disabled";
+"menu.texture" = "Purr texture";
+"menu.checkPermission" = "Check Accessibility permission";
+"menu.quit" = "Quit";
