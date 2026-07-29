@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import ServiceManagement
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem!
@@ -18,6 +19,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ("Coarse (spaced clicks)", 16),
         ("Extra coarse", 28)
     ]
+
+    // Launch at Login state, backed by SMAppService
+    private var launchAtLoginEnabled: Bool {
+        get {
+            SMAppService.mainApp.status == .enabled
+        }
+        set {
+            do {
+                if newValue {
+                    try SMAppService.mainApp.register()
+                } else {
+                    try SMAppService.mainApp.unregister()
+                }
+            } catch {
+                print("Failed to \(newValue ? "enable" : "disable") launch at login: \(error)")
+            }
+        }
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -57,6 +76,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
+        // Launch at Login toggle
+        let launchAtLoginItem = NSMenuItem(
+            title: launchAtLoginEnabled ? "Launch at Login ✓" : "Launch at Login",
+            action: #selector(toggleLaunchAtLogin),
+            keyEquivalent: ""
+        )
+        launchAtLoginItem.target = self
+        menu.addItem(launchAtLoginItem)
+
+        menu.addItem(NSMenuItem.separator())
+
         let permItem = NSMenuItem(title: "Check Accessibility Permission", action: #selector(recheckPermission), keyEquivalent: "")
         permItem.target = self
         menu.addItem(permItem)
@@ -77,6 +107,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func selectTooth(_ sender: NSMenuItem) {
         guard let value = sender.representedObject as? CGFloat else { return }
         scrollEngine.toothSize = value
+        rebuildMenu()
+    }
+
+    @objc func toggleLaunchAtLogin() {
+        launchAtLoginEnabled.toggle()
         rebuildMenu()
     }
 
