@@ -6,5 +6,10 @@
 "toggle.enabled" = "Enabled ✓";
 "toggle.disabled" = "Disabled";
 "menu.texture" = "Purr texture";
+"menu.launchAtLogin" = "Launch at Login";
+"menu.launchAtLoginEnabled" = "Launch at Login ✓";
+"menu.checkForUpdates" = "Check for Updates…";
+"menu.autoUpdate" = "Automatically Check for Updates";
+"menu.autoUpdateEnabled" = "Automatically Check for Updates ✓";
 "menu.checkPermission" = "Check Accessibility permission";
 "menu.quit" = "Quit";

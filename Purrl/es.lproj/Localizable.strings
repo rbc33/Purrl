@@ -5,6 +5,11 @@
 "preset.veryCoarse" = "Muy grueso";
 "toggle.enabled" = "Activado ✓";
 "toggle.disabled" = "Desactivado";
-"menu.texture" = "Textura del ronroneo";
+"menu.texture" = "Textura del scroll";
+"menu.launchAtLogin" = "Iniciar con el sistema";
+"menu.launchAtLoginEnabled" = "Iniciar con el sistema ✓";
+"menu.checkForUpdates" = "Buscar actualizaciones…";
+"menu.autoUpdate" = "Buscar actualizaciones automáticamente";
+"menu.autoUpdateEnabled" = "Buscar actualizaciones automáticamente ✓";
 "menu.checkPermission" = "Comprobar permiso de Accesibilidad";
 "menu.quit" = "Salir";

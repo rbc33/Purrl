@@ -6,13 +6,30 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		18D74723301E4C980009F096 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 18D74722301E4C980009F096 /* Sparkle */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		188568B1300A8BD4002527F0 /* Purrl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Purrl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		18D74725301E4D640009F096 /* Exceptions for "Purrl" folder in "Purrl" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 188568B0300A8BD4002527F0 /* Purrl */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		188568B3300A8BD4002527F0 /* Purrl */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				18D74725301E4D640009F096 /* Exceptions for "Purrl" folder in "Purrl" target */,
+			);
 			path = Purrl;
 			sourceTree = "<group>";
 		};
@@ -23,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18D74723301E4C980009F096 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +83,7 @@
 			);
 			name = Purrl;
 			packageProductDependencies = (
+				18D74722301E4C980009F096 /* Sparkle */,
 			);
 			productName = Purrl;
 			productReference = 188568B1300A8BD4002527F0 /* Purrl.app */;
@@ -95,6 +114,9 @@
 			);
 			mainGroup = 188568A8300A8BD4002527F0;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				18D74721301E4C980009F096 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 188568B2300A8BD4002527F0 /* Products */;
 			projectDirPath = "";
@@ -266,6 +288,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Purrl/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -300,6 +323,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Purrl/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -342,6 +366,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		18D74721301E4C980009F096 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		18D74722301E4C980009F096 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 18D74721301E4C980009F096 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 188568A9300A8BD4002527F0 /* Project object */;
 }

@@ -7,20 +7,25 @@
 
 import Cocoa
 import ServiceManagement
+import Sparkle
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem!
     var scrollEngine = ScrollHapticEngine()
 
-    // Tooth size presets
-    private let toothPresets: [(label: String, value: CGFloat)] = [
-        ("Fine (dense)", 4),
-        ("Medium", 8),
-        ("Coarse (spaced clicks)", 16),
-        ("Extra coarse", 28)
+    private lazy var updaterController = SPUStandardUpdaterController(
+        startingUpdater: true,
+        updaterDelegate: nil,
+        userDriverDelegate: nil
+    )
+
+    private let toothPresets: [(key: String, value: CGFloat)] = [
+        ("preset.fine", 4),
+        ("preset.medium", 8),
+        ("preset.coarse", 16),
+        ("preset.veryCoarse", 28)
     ]
 
-    // Launch at Login state, backed by SMAppService
     private var launchAtLoginEnabled: Bool {
         get {
             SMAppService.mainApp.status == .enabled
@@ -44,15 +49,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkAccessibilityPermission()
         scrollEngine.start()
 
+        _ = updaterController
+
         rebuildMenu()
     }
 
     private func rebuildMenu() {
         let menu = NSMenu()
 
-        // Enable/disable toggle
         let toggleItem = NSMenuItem(
-            title: scrollEngine.isEnabled ? "Enabled ✓" : "Disabled",
+            title: scrollEngine.isEnabled
+                ? NSLocalizedString("toggle.enabled", comment: "")
+                : NSLocalizedString("toggle.disabled", comment: ""),
             action: #selector(toggleEnabled),
             keyEquivalent: ""
         )
@@ -61,24 +69,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        // Tooth size submenu
         let toothMenu = NSMenu()
         for preset in toothPresets {
-            let item = NSMenuItem(title: preset.label, action: #selector(selectTooth(_:)), keyEquivalent: "")
+            let localizedLabel = NSLocalizedString(preset.key, comment: "")
+            let item = NSMenuItem(title: localizedLabel, action: #selector(selectTooth(_:)), keyEquivalent: "")
             item.target = self
             item.representedObject = preset.value
             item.state = (scrollEngine.toothSize == preset.value) ? .on : .off
             toothMenu.addItem(item)
         }
-        let toothParent = NSMenuItem(title: "Purr Texture", action: nil, keyEquivalent: "")
+        let toothParent = NSMenuItem(
+            title: NSLocalizedString("menu.texture", comment: ""),
+            action: nil,
+            keyEquivalent: ""
+        )
         menu.setSubmenu(toothMenu, for: toothParent)
         menu.addItem(toothParent)
 
         menu.addItem(NSMenuItem.separator())
 
-        // Launch at Login toggle
         let launchAtLoginItem = NSMenuItem(
-            title: launchAtLoginEnabled ? "Launch at Login ✓" : "Launch at Login",
+            title: launchAtLoginEnabled
+                ? NSLocalizedString("menu.launchAtLoginEnabled", comment: "")
+                : NSLocalizedString("menu.launchAtLogin", comment: ""),
             action: #selector(toggleLaunchAtLogin),
             keyEquivalent: ""
         )
@@ -87,12 +100,41 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        let permItem = NSMenuItem(title: "Check Accessibility Permission", action: #selector(recheckPermission), keyEquivalent: "")
+        let checkUpdatesItem = NSMenuItem(
+            title: NSLocalizedString("menu.checkForUpdates", comment: ""),
+            action: #selector(checkForUpdates),
+            keyEquivalent: ""
+        )
+        checkUpdatesItem.target = self
+        checkUpdatesItem.isEnabled = updaterController.updater.canCheckForUpdates
+        menu.addItem(checkUpdatesItem)
+
+        let autoUpdateItem = NSMenuItem(
+            title: updaterController.updater.automaticallyChecksForUpdates
+                ? NSLocalizedString("menu.autoUpdateEnabled", comment: "")
+                : NSLocalizedString("menu.autoUpdate", comment: ""),
+            action: #selector(toggleAutomaticUpdates),
+            keyEquivalent: ""
+        )
+        autoUpdateItem.target = self
+        menu.addItem(autoUpdateItem)
+
+        menu.addItem(NSMenuItem.separator())
+
+        let permItem = NSMenuItem(
+            title: NSLocalizedString("menu.checkPermission", comment: ""),
+            action: #selector(recheckPermission),
+            keyEquivalent: ""
+        )
         permItem.target = self
         menu.addItem(permItem)
 
         menu.addItem(NSMenuItem.separator())
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
+        let quitItem = NSMenuItem(
+            title: NSLocalizedString("menu.quit", comment: ""),
+            action: #selector(quit),
+            keyEquivalent: "q"
+        )
         quitItem.target = self
         menu.addItem(quitItem)
 
@@ -112,6 +154,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func toggleLaunchAtLogin() {
         launchAtLoginEnabled.toggle()
+        rebuildMenu()
+    }
+
+    @objc func checkForUpdates() {
+        updaterController.checkForUpdates(nil)
+    }
+
+    @objc func toggleAutomaticUpdates() {
+        updaterController.updater.automaticallyChecksForUpdates.toggle()
         rebuildMenu()
     }
 
