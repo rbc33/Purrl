@@ -6,6 +6,8 @@
 "toggle.enabled" = "Activado ✓";
 "toggle.disabled" = "Desactivado";
 "menu.texture" = "Textura del scroll";
+"menu.onlyScrollable" = "Solo contenido desplazable";
+"menu.onlyScrollableEnabled" = "Solo contenido desplazable ✓";
 "menu.launchAtLogin" = "Iniciar con el sistema";
 "menu.launchAtLoginEnabled" = "Iniciar con el sistema ✓";
 "menu.checkForUpdates" = "Buscar actualizaciones…";

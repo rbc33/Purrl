@@ -6,6 +6,8 @@
 "toggle.enabled" = "Enabled ✓";
 "toggle.disabled" = "Disabled";
 "menu.texture" = "Purr texture";
+"menu.onlyScrollable" = "Only Scrollable Content";
+"menu.onlyScrollableEnabled" = "Only Scrollable Content ✓";
 "menu.launchAtLogin" = "Launch at Login";
 "menu.launchAtLoginEnabled" = "Launch at Login ✓";
 "menu.checkForUpdates" = "Check for Updates…";

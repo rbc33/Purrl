@@ -86,6 +86,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.setSubmenu(toothMenu, for: toothParent)
         menu.addItem(toothParent)
 
+        let onlyScrollableItem = NSMenuItem(
+            title: scrollEngine.onlyScrollableContent
+                ? NSLocalizedString("menu.onlyScrollableEnabled", comment: "")
+                : NSLocalizedString("menu.onlyScrollable", comment: ""),
+            action: #selector(toggleOnlyScrollable),
+            keyEquivalent: ""
+        )
+        onlyScrollableItem.target = self
+        menu.addItem(onlyScrollableItem)
+
         menu.addItem(NSMenuItem.separator())
 
         let launchAtLoginItem = NSMenuItem(
@@ -143,6 +153,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func toggleEnabled() {
         scrollEngine.isEnabled.toggle()
+        rebuildMenu()
+    }
+
+    @objc func toggleOnlyScrollable() {
+        scrollEngine.onlyScrollableContent.toggle()
         rebuildMenu()
     }
 
