@@ -18,10 +18,12 @@ rm -f "$DMG_NAME"
 rm -f rw.*."$DMG_NAME" 2>/dev/null || true
 rm -f "$ICNS_NAME"
 
-# ---- 2. Build in Release ----
-echo "==> Building $APP_NAME (Release)..."
+# ---- 2. Build in Release (universal: arm64 + x86_64) ----
+echo "==> Building $APP_NAME (Release, universal binary)..."
 xcodebuild -scheme "$SCHEME" -configuration "$CONFIGURATION" \
   -derivedDataPath "$DERIVED_DATA_PATH" \
+  ARCHS="arm64 x86_64" \
+  ONLY_ACTIVE_ARCH=NO \
   clean build
 
 APP_PATH="$DERIVED_DATA_PATH/Build/Products/$CONFIGURATION/$APP_NAME.app"
@@ -30,6 +32,10 @@ if [ ! -d "$APP_PATH" ]; then
   echo "ERROR: Built app not found at $APP_PATH"
   exit 1
 fi
+
+# ---- 2b. Verify universal binary ----
+echo "==> Verifying architectures..."
+lipo -info "$APP_PATH/Contents/MacOS/$APP_NAME"
 
 # ---- 3. Extract the .icns Xcode already generated from Assets.xcassets ----
 echo "==> Extracting app icon (.icns) from the built app..."
@@ -80,7 +86,13 @@ if [ -f "$ICNS_NAME" ]; then
   fi
 fi
 
-# ---- 7. Compute SHA256 ----
+# ---- 7. Sign the update for Sparkle (if tools are present) ----
+if [ -f "sparkle-tools/bin/sign_update" ]; then
+  echo "==> Signing update for Sparkle..."
+  ./sparkle-tools/bin/sign_update "$DMG_NAME"
+fi
+
+# ---- 8. Compute SHA256 ----
 echo "==> Computing SHA256..."
 SHA256=$(shasum -a 256 "$DMG_NAME" | awk '{print $1}')
 
