@@ -14,6 +14,8 @@ class ScrollHapticEngine {
     private var lastToothTime: TimeInterval = 0
     private let minToothInterval: TimeInterval = 0.012
 
+    private let scrollDetector = ScrollabilityDetector()
+
     // Configurable, con persistencia
     var toothSize: CGFloat {
         get { UserDefaults.standard.object(forKey: "toothSize") as? CGFloat ?? 8.0 }
@@ -23,6 +25,11 @@ class ScrollHapticEngine {
     var isEnabled: Bool {
         get { UserDefaults.standard.object(forKey: "isEnabled") as? Bool ?? true }
         set { UserDefaults.standard.set(newValue, forKey: "isEnabled") }
+    }
+
+    var onlyScrollableContent: Bool {
+        get { UserDefaults.standard.object(forKey: "onlyScrollableContent") as? Bool ?? true }
+        set { UserDefaults.standard.set(newValue, forKey: "onlyScrollableContent") }
     }
 
     func start() {
@@ -44,6 +51,9 @@ class ScrollHapticEngine {
 
     private func handleScroll(_ event: NSEvent) {
         guard isEnabled else { return }
+        if onlyScrollableContent {
+            guard scrollDetector.isScrollableAtCurrentCursor() else { return }
+        }
         let delta = abs(event.scrollingDeltaY)
         guard delta > 0 else { return }
 
