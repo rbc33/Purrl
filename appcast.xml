@@ -3,14 +3,14 @@
   <channel>
     <title>Purrl Updates</title>
     <item>
-      <title>Version 1.0.6</title>
-      <sparkle:version>1.0.6</sparkle:version>
-      <sparkle:shortVersionString>1.0.6</sparkle:shortVersionString>
+      <title>Version 1.0.7</title>
+      <sparkle:version>2</sparkle:version>
+      <sparkle:shortVersionString>1.0.7</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
       <enclosure
-        url="https://github.com/rbc33/Purrl/releases/download/v1.0.6/Purrl.dmg"
-        sparkle:edSignature="nMygkGDfebe1l0acRoDdhqB/x1OZCeXMZxzzysKySKqIwNBfchaw05/yN2YYqvPSt84xWXWYw0uAUaDvISbvAA=="
-        length="1200420"
+        url="https://github.com/rbc33/Purrl/releases/download/v1.0.7/Purrl.dmg"
+        sparkle:edSignature="joHfvLNxlYM82LlLC/iozGq1doMreag6nz0qo3zNH4BLiHSJqtiPTImPYD+QlPrVZwntgCTxGO38DVlViQcXCw=="
+        length="1200417"
         type="application/octet-stream" />
     </item>
   </channel>
