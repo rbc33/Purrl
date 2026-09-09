@@ -13,12 +13,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem!
     var scrollEngine = ScrollHapticEngine()
 
+    // Sparkle updater controller — starts the updater automatically
     private lazy var updaterController = SPUStandardUpdaterController(
         startingUpdater: true,
         updaterDelegate: nil,
         userDriverDelegate: nil
     )
 
+    // Tooth size presets — label is a localization key, resolved at menu build time
     private let toothPresets: [(key: String, value: CGFloat)] = [
         ("preset.fine", 4),
         ("preset.medium", 8),
@@ -26,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ("preset.veryCoarse", 28)
     ]
 
+    // Launch at Login state, backed by SMAppService
     private var launchAtLoginEnabled: Bool {
         get {
             SMAppService.mainApp.status == .enabled
@@ -49,6 +52,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkAccessibilityPermission()
         scrollEngine.start()
 
+        // Touch updaterController once so Sparkle's lazy init runs and
+        // the updater starts checking on its configured schedule.
         _ = updaterController
 
         rebuildMenu()
@@ -57,10 +62,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func rebuildMenu() {
         let menu = NSMenu()
 
+        // Enable/disable toggle
         let toggleItem = NSMenuItem(
             title: scrollEngine.isEnabled
-                ? NSLocalizedString("toggle.enabled", comment: "")
-                : NSLocalizedString("toggle.disabled", comment: ""),
+                ? NSLocalizedString("toggle.enabled", comment: "Menu item shown when scrolling haptics are on")
+                : NSLocalizedString("toggle.disabled", comment: "Menu item shown when scrolling haptics are off"),
             action: #selector(toggleEnabled),
             keyEquivalent: ""
         )
@@ -69,9 +75,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
+        // Tooth size submenu
         let toothMenu = NSMenu()
         for preset in toothPresets {
-            let localizedLabel = NSLocalizedString(preset.key, comment: "")
+            let localizedLabel = NSLocalizedString(preset.key, comment: "Tooth size preset label")
             let item = NSMenuItem(title: localizedLabel, action: #selector(selectTooth(_:)), keyEquivalent: "")
             item.target = self
             item.representedObject = preset.value
@@ -79,29 +86,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             toothMenu.addItem(item)
         }
         let toothParent = NSMenuItem(
-            title: NSLocalizedString("menu.texture", comment: ""),
+            title: NSLocalizedString("menu.texture", comment: "Submenu title for tooth size options"),
             action: nil,
             keyEquivalent: ""
         )
         menu.setSubmenu(toothMenu, for: toothParent)
         menu.addItem(toothParent)
 
-        let onlyScrollableItem = NSMenuItem(
-            title: scrollEngine.onlyScrollableContent
-                ? NSLocalizedString("menu.onlyScrollableEnabled", comment: "")
-                : NSLocalizedString("menu.onlyScrollable", comment: ""),
-            action: #selector(toggleOnlyScrollable),
-            keyEquivalent: ""
-        )
-        onlyScrollableItem.target = self
-        menu.addItem(onlyScrollableItem)
-
         menu.addItem(NSMenuItem.separator())
 
+        // Launch at Login toggle
         let launchAtLoginItem = NSMenuItem(
             title: launchAtLoginEnabled
-                ? NSLocalizedString("menu.launchAtLoginEnabled", comment: "")
-                : NSLocalizedString("menu.launchAtLogin", comment: ""),
+                ? NSLocalizedString("menu.launchAtLoginEnabled", comment: "Menu item shown when launch at login is on")
+                : NSLocalizedString("menu.launchAtLogin", comment: "Menu item shown when launch at login is off"),
             action: #selector(toggleLaunchAtLogin),
             keyEquivalent: ""
         )
@@ -110,8 +108,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
+        // Check for Updates now
         let checkUpdatesItem = NSMenuItem(
-            title: NSLocalizedString("menu.checkForUpdates", comment: ""),
+            title: NSLocalizedString("menu.checkForUpdates", comment: "Menu item to manually check for app updates"),
             action: #selector(checkForUpdates),
             keyEquivalent: ""
         )
@@ -119,10 +118,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkUpdatesItem.isEnabled = updaterController.updater.canCheckForUpdates
         menu.addItem(checkUpdatesItem)
 
+        // Automatic updates toggle
         let autoUpdateItem = NSMenuItem(
             title: updaterController.updater.automaticallyChecksForUpdates
-                ? NSLocalizedString("menu.autoUpdateEnabled", comment: "")
-                : NSLocalizedString("menu.autoUpdate", comment: ""),
+                ? NSLocalizedString("menu.autoUpdateEnabled", comment: "Menu item shown when automatic update checks are on")
+                : NSLocalizedString("menu.autoUpdate", comment: "Menu item shown when automatic update checks are off"),
             action: #selector(toggleAutomaticUpdates),
             keyEquivalent: ""
         )
@@ -132,7 +132,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem.separator())
 
         let permItem = NSMenuItem(
-            title: NSLocalizedString("menu.checkPermission", comment: ""),
+            title: NSLocalizedString("menu.checkPermission", comment: "Menu item to recheck Accessibility permission"),
             action: #selector(recheckPermission),
             keyEquivalent: ""
         )
@@ -141,7 +141,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
         let quitItem = NSMenuItem(
-            title: NSLocalizedString("menu.quit", comment: ""),
+            title: NSLocalizedString("menu.quit", comment: "Menu item to quit the app"),
             action: #selector(quit),
             keyEquivalent: "q"
         )
@@ -153,11 +153,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func toggleEnabled() {
         scrollEngine.isEnabled.toggle()
-        rebuildMenu()
-    }
-
-    @objc func toggleOnlyScrollable() {
-        scrollEngine.onlyScrollableContent.toggle()
         rebuildMenu()
     }
 
